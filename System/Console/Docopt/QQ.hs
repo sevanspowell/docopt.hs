@@ -56,7 +56,8 @@ docopt = QuasiQuoter { quoteExp  = docoptExp
                      , quotePat  = unsupported "Pattern"
                      , quoteType = unsupported "Type"
                      }
-    where unsupported = fail . (++ " context unsupported")
+    where
+      unsupported _ = fail . (++ " context unsupported")
 
 -- | Same as 'docopt', but parses the given file instead of a literal
 -- string.

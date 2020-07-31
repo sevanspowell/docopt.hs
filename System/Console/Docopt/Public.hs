@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module System.Console.Docopt.Public
   (
     -- * Command line arguments parsers
@@ -190,7 +191,11 @@ isPresentM :: Monad m => Arguments -> Option -> m Bool
 isPresentM args o = return $ isPresent args o
 
 {-# DEPRECATED getFirstArg "Use 'getAllArgs' instead" #-}
-getFirstArg :: Monad m => Arguments -> Option -> m String
+#if MIN_VERSION_base (4,9,0)
+getFirstArg :: (Monad m, MonadFail m) => Arguments -> Option -> m String
+#else
+getFirstArg :: (Monad m) => Arguments -> Option -> m String
+#endif
 getFirstArg args opt =
   let failure = fail $ "no argument given: " ++ show opt
   in  case opt `M.lookup` args of
